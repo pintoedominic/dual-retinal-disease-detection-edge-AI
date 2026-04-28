@@ -1,8 +1,8 @@
-# Dual Retinal Disease Detection — Edge AI
+# Dual Retinal Disease Detection - Edge AI
 
 **Edge-deployed dual retinal disease detection system (ROP + DR) on NVIDIA Jetson Orin NX — 93%+ accuracy, real-time inference, no cloud dependency.**
 
-> Master of Engineering Dissertation — Auckland University of Technology (AUT), 2025  
+> Master of Engineering Dissertation - Auckland University of Technology (AUT), 2025  
 > Author: Dominic Pintoe | Student ID: 23198505  
 > Supervisor: Prof. Hamid Gholamhosseini
 
