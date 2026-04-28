@@ -1,0 +1,39 @@
+# Jetson Orin NX Deployment Configuration
+# dual-retinal-disease-detection-edge-AI
+
+# ── Model Paths (on Jetson filesystem) ────────────────────────
+models:
+  rop_binary:   "/home/jetson/models/rop_binary.onnx"
+  rop_severity: "/home/jetson/models/rop_severity.onnx"
+  dr_binary:    "/home/jetson/models/dr_binary.onnx"
+  dr_severity:  "/home/jetson/models/dr_severity.onnx"
+
+# ── Inference Settings ────────────────────────────────────────
+inference:
+  imgsz: 224
+  device: "cpu"       # Use "cpu" with ONNX Runtime CPU provider on Jetson
+                      # GPU provider requires custom ONNX Runtime build for aarch64
+
+# ── Camera Configuration ──────────────────────────────────────
+camera:
+  type: "csi"         # "csi" for native CSI camera, "usb" for USB camera
+  width: 1280
+  height: 720
+  fps: 30
+  # CSI pipeline string (Jetson native):
+  csi_pipeline: "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=1280, height=720, framerate=30/1 ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink drop=1"
+
+# ── Detection Modes ───────────────────────────────────────────
+mode: "both"          # Options: "rop", "dr", "both", "auto"
+
+# ── Performance Notes (measured on Jetson Orin NX 16GB) ──────
+# ONNX CPU provider:
+#   ROP pipeline:      ~37 ms latency (~26 FPS)
+#   DR pipeline:       ~109 ms latency (~9 FPS)
+#   Combined (both):   ~172 ms latency (~6-9 FPS)
+#
+# Dummy inference times (no camera input):
+#   ROP Binary ONNX:    17.0 ms
+#   ROP Severity ONNX:  35.0 ms
+#   DR Binary ONNX:     37.7 ms
+#   DR Severity ONNX:   42.9 ms

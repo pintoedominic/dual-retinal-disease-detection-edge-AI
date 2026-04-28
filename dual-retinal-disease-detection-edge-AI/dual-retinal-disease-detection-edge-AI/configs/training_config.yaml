@@ -1,0 +1,86 @@
+# Training Configuration — Two-Stage YOLO11 ROP/DR Detection
+# dual-retinal-disease-detection-edge-AI
+
+# ── Dataset Paths ──────────────────────────────────────────────
+rop_dataset_path: "datasets/czech_rop/images_stack_without_captions"
+aptos_dataset_path: "datasets/aptos2019/archive"
+
+stage_a_output: "datasets/processed/STAGE_A_BIN"
+stage_b_output: "datasets/processed/STAGE_B_SEVERITY"
+aptos_processed: "datasets/processed/APTOS_PROCESSED"
+mixed_output:    "datasets/processed/MIXED_APTOS_ROP"
+
+# ── Stage A: Binary Classification (No ROP vs ROP) ────────────
+stage_a:
+  model: "yolo11s-cls.pt"           # Smaller backbone — simpler binary task
+  run_name: "ROP_stageA_bin"
+  epochs: 200
+  patience: 20
+  imgsz: 224
+  batch: 32
+  optimizer: "AdamW"
+  lr0: 1.0e-3
+  dropout: 0.2
+  augment: true
+
+# ── Stage B: Severity Classification (Mild/Moderate/Severe) ───
+stage_b:
+  model: "yolo11m-cls.pt"           # Larger backbone — harder 3-class task
+  run_name: "ROP_stageB_severity"
+  epochs: 200
+  patience: 20
+  imgsz: 224
+  batch: 32
+  optimizer: "AdamW"
+  lr0: 8.0e-4
+  dropout: 0.3
+  augment: true
+
+# ── Transfer Learning Pipeline ─────────────────────────────────
+transfer_learning:
+  stage1_aptos_pretrain:
+    model: "yolo11m-cls.pt"
+    run_name: "APTOS_pretrain"
+    epochs: 30
+    patience: 10
+    lr0: 1.0e-3
+    dropout: 0.2
+
+  stage2_mixed_training:
+    run_name: "Mixed_APTOS_ROP"
+    epochs: 25
+    patience: 8
+    lr0: 5.0e-4
+    dropout: 0.3
+
+  stage3_rop_binary_finetune:
+    run_name: "ROP_binary_transfer"
+    epochs: 40
+    patience: 12
+    lr0: 1.0e-4
+    dropout: 0.2
+
+  stage4_rop_severity_transfer:
+    run_name: "ROP_severity_transfer"
+    epochs: 35
+    patience: 10
+    lr0: 8.0e-5
+    dropout: 0.3
+
+# ── Label Mapping (DG codes → Classes) ────────────────────────
+label_mapping:
+  no_rop:   [0, 1, 2, 3]       # DG 0–3
+  mild:     [4, 5, 6]          # DG 4–6
+  moderate: [7, 8, 9, 10]      # DG 7–10
+  severe:   [11, 12, 13]       # DG 11–13
+
+# ── Data Split ────────────────────────────────────────────────
+splits:
+  train: 0.70
+  val:   0.20
+  test:  0.10
+  random_seed: 42
+
+# ── Hardware ──────────────────────────────────────────────────
+device: 0           # GPU index (0 = first GPU); use "cpu" for CPU training
+workers: 0          # Set 0 for Windows/Spyder compatibility

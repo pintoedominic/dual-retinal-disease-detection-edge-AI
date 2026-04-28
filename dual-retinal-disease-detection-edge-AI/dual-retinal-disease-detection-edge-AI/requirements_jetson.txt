@@ -1,0 +1,21 @@
+# Jetson Orin NX requirements
+# Install JetPack 5.x first, then:
+
+# ONNX Runtime (CPU provider — GPU provider requires manual build for Jetson aarch64)
+onnxruntime==1.19.2
+
+# OpenCV (use system OpenCV built with CUDA on Jetson, or install headless):
+opencv-python-headless>=4.8.0
+
+# Data processing
+numpy>=1.21.6
+Pillow>=9.0.0
+
+# Utilities
+tqdm>=4.65.0
+PyYAML>=6.0
+
+# Note: torch and ultralytics are NOT required on Jetson for inference
+# All inference runs via ONNX Runtime using exported .onnx model files
+# To install torch on Jetson, use NVIDIA's pre-built wheel for aarch64:
+# https://developer.nvidia.com/embedded/downloads
