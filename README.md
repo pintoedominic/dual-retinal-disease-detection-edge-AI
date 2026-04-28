@@ -12,7 +12,7 @@
 
 This repository contains the full implementation of a two-stage deep learning system for automated detection of **Retinopathy of Prematurity (ROP)** and **Paediatric Diabetic Retinopathy (DR)** on the **NVIDIA Jetson Orin NX** edge computing platform.
 
-The core innovation is a **novel two-stage YOLO11 classification pipeline** that resolves the intractable class imbalance problem present in paediatric retinal datasets — achieving **93.68% end-to-end accuracy** where conventional direct four-class approaches repeatedly failed (< 30% accuracy).
+The core innovation is a **novel two-stage YOLO11 classification pipeline** that resolves the intractable class imbalance problem present in paediatric retinal datasets - achieving **93.68% end-to-end accuracy** where conventional direct four-class approaches repeatedly failed (< 30% accuracy).
 
 ---
 
