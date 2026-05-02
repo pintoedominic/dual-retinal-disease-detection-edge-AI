@@ -122,7 +122,7 @@ dual-retinal-disease-detection-edge-AI/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/dual-retinal-disease-detection-edge-AI.git
+git clone https://github.com/pintoedominic/dual-retinal-disease-detection-edge-AI.git
 cd dual-retinal-disease-detection-edge-AI
 ```
 
